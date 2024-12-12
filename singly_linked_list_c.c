@@ -60,7 +60,7 @@ void delete_at_last(struct Node** ptr) {
     if ((*ptr)->next==NULL){ free(*ptr) ; *ptr = NULL ;} 
     
     else{
-    while (tmp_ptr->next != NULL) {
+    while (tmp_ptr->next->next != NULL) {
         tmp_ptr = tmp_ptr->next ; 
     }
     
@@ -70,6 +70,7 @@ void delete_at_last(struct Node** ptr) {
     }
 
 } 
+
 
 void insert_at_position(struct Node** ptr , int data, int position ) { 
     
@@ -95,9 +96,33 @@ void insert_at_position(struct Node** ptr , int data, int position ) {
     if (position==tmp_pos+1) {insert_at_last(ptr,data) ; return ;}
 } 
 
+void delete_at_position(struct Node** ptr ,int position ) { 
+    
+    
+    if ((position==0) || (*ptr == NULL)){ return delete_at_first(ptr) ;}
+    
+    struct Node * tmp_ptr = * ptr;
+    struct Node * tmp_ptr2;
+    int tmp_pos = 0 ; 
+    
+    while ((tmp_ptr-> next != NULL )&&(tmp_pos<position)) { 
+            
+        if (position==tmp_pos+1){
+            tmp_ptr2 = tmp_ptr->next->next ; 
+            free(tmp_ptr->next) ; 
+            tmp_ptr->next = tmp_ptr2 ;
+            return ; 
+        }
+        tmp_ptr = tmp_ptr->next ;
+        tmp_pos ++ ; 
+    } 
+
+    if (position==tmp_pos) {delete_at_last(ptr); return ;}
+} 
+
 void print_linked_list(struct Node** ptr)
 {   
-    if (*ptr==NULL){return ; } 
+    if (*ptr==NULL){ printf("empty list \n " ) ; return ; } 
     struct Node * tmp_ptr = *ptr ; 
     while ( tmp_ptr->next != NULL ) { 
         printf("\t%d-->",tmp_ptr->data) ; 
@@ -112,52 +137,46 @@ int main() {
 
     insert_at_first(&head,3) ; 
     print_linked_list(&head) ;
-    // printf("data is\t%d\n",head->data) ; 
+    
     insert_at_last(&head,9) ; 
     print_linked_list(&head) ;
-    insert_at_first(&head,4) ; 
+    
+    delete_at_first(&head) ;
     print_linked_list(&head) ;
-    // printf("data is\t%d\n",head->data) ; 
-    insert_at_first(&head,5) ; 
+    
+    delete_at_last(&head) ;
     print_linked_list(&head) ;
-    // printf("data is\t%d\n",head->data) ; 
-    insert_at_position(&head,90,2) ;
+
+    insert_at_last(&head,9) ; 
     print_linked_list(&head) ;
+
+    insert_at_first(&head,3) ; 
+    print_linked_list(&head) ;
+
+    delete_at_last(&head) ;
+    print_linked_list(&head) ;
+
+    delete_at_first(&head) ;
+    print_linked_list(&head) ;
+
     insert_at_position(&head,90,0) ;
     print_linked_list(&head) ;
-    insert_at_position(&head,90,6) ;
+    insert_at_position(&head,91,1) ;
     print_linked_list(&head) ;
-    insert_at_position(&head,90,10) ;
-    print_linked_list(&head) ;
-    
-    delete_at_first(&head) ;
+    insert_at_position(&head,92,2) ;
     print_linked_list(&head) ;
 
-    delete_at_first(&head) ;
+    delete_at_position(&head,2) ;
+    print_linked_list(&head) ;
+    delete_at_position(&head,1) ;
     print_linked_list(&head) ;
 
-    delete_at_first(&head) ;
+    delete_at_position(&head,0) ;
     print_linked_list(&head) ;
-
-    delete_at_first(&head) ;
-    print_linked_list(&head) ;
-
-    delete_at_first(&head) ;
-    print_linked_list(&head) ;
-
-    delete_at_first(&head) ;
-    print_linked_list(&head) ;
-
-    delete_at_last(&head) ;
-    print_linked_list(&head) ;
-
-    delete_at_last(&head) ;
+    delete_at_position(&head,0) ;
     print_linked_list(&head) ;
 
     
-
-
-    // printf("data%d",head->data) ; 
 
     return 0 ;
 
