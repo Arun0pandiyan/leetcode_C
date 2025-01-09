@@ -66,6 +66,83 @@ struct node * search_node(struct node * root,int target){
 }
 
 
+
+struct node * Inpre(struct node * root){
+    while(root!=NULL){
+        root = root->right ; 
+    }
+    return root ; 
+}
+
+struct node * Insuc(struct node * root){
+    while(root->left!=NULL){
+        root = root->left ; 
+    }
+    return root ; 
+}
+
+int Height(struct node * root){
+    int x,y ; 
+    if (root==NULL){
+        return 0 ; 
+    }
+    x = Height(root->left) ; 
+    y = Height(root->right) ;
+    return x>y ? x+1 : y+1 ;
+    
+}
+
+
+
+void Delete(struct node * root,key){
+    ; 
+    
+    step 1 . go find the node
+    step 2 . find its height 
+    step 3 . swap it with its predecessor or successor based on its height
+    
+    struct node * temp_ptr ; 
+    if(root->left==NULL && root->right==NULL) { 
+        
+        free(root) ; 
+        return NULL ;
+    }
+    
+    
+    if(root->data<key){ 
+        Delete(root->right,key) ; 
+    }
+    
+    
+    else if(root->data>key){
+        Delete(root->left,key) ; 
+    }
+    
+    else {
+        
+        if ( Height(root->left) <  Height(root->right) ) { 
+             
+            temp_ptr = Inpre(root)  ; 
+            root->data = temp_ptr->data  ; 
+            Delete(temp_ptr,temp_ptr->data) ; 
+         
+        }
+        
+        else {
+            temp_ptr = Insuc(root)  ; 
+            root->data = temp_ptr->data  ; 
+            Delete(temp_ptr,temp_ptr->data) ; 
+            
+        }
+    }
+    
+    
+}
+
+// void rInsert(struct node * root){
+//     ;
+// }
+
 void print_tree(struct node * root){
     if (root==NULL){return ; } 
     print_tree(root->left) ; 
@@ -73,16 +150,40 @@ void print_tree(struct node * root){
     print_tree(root->right) ; 
     
 }
+
+void print_tree_lvl_order(struct node * root){
+    
+    if (root!=NULL)
+    {printf("%d\n",root->data) ; }
+    
+    root->left?printf("%d %d\n",root->left->data) : ;;
+    root->right?printf("%d %d\n",root->left->data) : ;;
+    
+
+    
+}
 int main() {
     // Write C code here
     struct  node * root = NULL ; 
     struct  node * result = NULL ; 
+    int height ;
     insert_tree(&root,10);
-    insert_tree(&root,8);
-    insert_tree(&root,9);
     insert_tree(&root,15);
+    insert_tree(&root,13);
+    insert_tree(&root,18);
+    insert_tree(&root,12);
+    insert_tree(&root,14);
+    insert_tree(&root,17);
+    insert_tree(&root,8);
+    insert_tree(&root,7);
+    insert_tree(&root,9);
+    
     print_tree(root) ;
-    result = search_node(root,8) ; 
-    printf("%d",result->data) ; 
+    // result = search_node(root,8) ; 
+    // printf("%d",result->data) ; 
+    // height = Height(root) ; 
+    // printf("%d",height) ; 
+    struct node * successor = Insuc(root->right) ;
+    printf("%d",successor->data) ;
     return 0;
 }
